@@ -7,10 +7,10 @@ runs:
     - name: Install Node.js
       shell: bash
       run: |
-        curl -fsSL https://nodejs.org/dist/v22.11.0/node-v22.11.0-linux-x64.tar.xz -o node-v22.11.0-linux-x64.tar.xz
-        sudo tar -xJf node-v22.11.0-linux-x64.tar.xz -C /usr/local
-        rm -f node-v22.11.0-linux-x64.tar.xz
-        echo "/usr/local/node-v22.11.0-linux-x64/bin" >> $GITHUB_PATH
+        curl -fsSL https://nodejs.org/dist/v24.9.0/node-v22.11.0-linux-x64.tar.xz -o node-v22.11.0-linux-x64.tar.xz
+        sudo tar -xJf node-v24.9.0-linux-x64.tar.xz -C /usr/local
+        rm -f node-v24.9.0-linux-x64.tar.xz
+        echo "/usr/local/node-v24.9.0-linux-x64/bin" >> $GITHUB_PATH
     - name: Corepack
       shell: bash
       run: |
@@ -25,7 +25,7 @@ runs:
       shell: bash
       run: |
         set +e
-        ls -alFh /usr/local/node-v22.11.0-linux-x64/bin
+        ls -alFh /usr/local/node-v24.9.0-linux-x64/bin
         which node
         which npm
         which yarn
