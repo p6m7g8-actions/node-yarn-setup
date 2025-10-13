@@ -1,31 +1,43 @@
 name: "P6 GHA: Setups Node"
 description: "P6 GHA: Setups Node"
 author: "Philip M. Gollucci"
+
+inputs:
+  node-version:
+    description: "Node.js version to install (e.g., 24.9.0)"
+    required: false
+    default: "24.9.0"
+
 runs:
   using: "composite"
   steps:
     - name: Install Node.js
       shell: bash
       run: |
-        curl -fsSL https://nodejs.org/dist/v24.9.0/node-v24.9.0-linux-x64.tar.xz -o node-v24.9.0-linux-x64.tar.xz
-        sudo tar -xJf node-v24.9.0-linux-x64.tar.xz -C /usr/local
-        rm -f node-v24.9.0-linux-x64.tar.xz
-        echo "/usr/local/node-v24.9.0-linux-x64/bin" >> $GITHUB_PATH
+        NODE_VERSION="${{ inputs.node-version }}"
+        curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" -o "node-v${NODE_VERSION}-linux-x64.tar.xz"
+        sudo tar -xJf "node-v${NODE_VERSION}-linux-x64.tar.xz" -C /usr/local
+        rm -f "node-v${NODE_VERSION}-linux-x64.tar.xz"
+        echo "/usr/local/node-v${NODE_VERSION}-linux-x64/bin" >> $GITHUB_PATH
+
     - name: Corepack
       shell: bash
       run: |
         sudo corepack enable
         sudo corepack prepare yarn@latest --activate
+
     - name: Restore NPM node_modules
       uses: actions/cache/restore@v4.3.0
       with:
         path: node_modules
         key: ${{ runner.os }}-node_modules-${{ hashFiles('pnpm-lock.yaml') }}
+
     - name: Check Node
       shell: bash
       run: |
+        NODE_VERSION="${{ inputs.node-version }}"
         set +e
-        ls -alFh /usr/local/node-v24.9.0-linux-x64/bin
+        ls -alFh "/usr/local/node-v${NODE_VERSION}-linux-x64/bin"
         which node
         which npm
         which yarn
@@ -35,11 +47,13 @@ runs:
         yarn --version
         corepack --version
         echo $PATH
+
     - name: Install pnpm and dependencies
       shell: bash
       run: |
         yarn install
         yarn explain peer-requirements
+
     - name: Cache NPM dependencies
       uses: actions/cache@v4.3.0
       with:
