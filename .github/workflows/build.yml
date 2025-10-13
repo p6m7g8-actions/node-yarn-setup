@@ -28,23 +28,3 @@ jobs:
           which node
           which yarn
           echo "PATH: $PATH"
-
-      - name: Create temporary test project
-        shell: bash
-        run: |
-          mkdir test-project
-          cd test-project
-          yarn init -y
-          echo 'console.log("Node + Yarn self-test OK")' > index.js
-          yarn add lodash
-          yarn node index.js
-
-      - name: Confirm Yarn cache and dependencies
-        shell: bash
-        run: |
-          du -sh node_modules || echo "No node_modules found"
-          yarn list --depth=0 || echo "Yarn list failed"
-
-      - name: Cleanup temporary project
-        shell: bash
-        run: rm -rf test-project
