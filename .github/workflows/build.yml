@@ -2,11 +2,29 @@ name: Build
 
 on:
   pull_request: {}
+  merge_group: {}
   workflow_dispatch: {}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: No-op
-        run: echo "This workflow intentionally does nothing and always passes."
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node & Yarn using this action
+        uses: ./ # use the local action from this repository
+        with:
+          node-version: "24.9.0"
+
+      - name: Validate Node & Yarn environment
+        shell: bash
+        run: |
+          echo "Validating Node.js and Yarn setup..."
+          node -v
+          npm -v
+          yarn -v
+          corepack --version
+          which node
+          which yarn
+          echo "PATH: $PATH"
