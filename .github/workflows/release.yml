@@ -73,7 +73,7 @@ jobs:
         if: ${{ steps.bump.outputs.bump == 'true' && !contains(github.event.head_commit.message, 'chore(release):') }}
         shell: bash
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.P6_A_GH_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_REF: ${{ github.ref }}
         run: |
