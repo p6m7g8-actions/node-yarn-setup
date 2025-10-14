@@ -3,16 +3,21 @@ name: Build
 on:
   pull_request: {}
   merge_group: {}
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      node-version:
+        description: "Node.js version to install"
+        required: false
+        default: "24.9.0"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.0
 
       - name: Setup Node & Yarn using this action
         uses: ./ # use the local action from this repository
         with:
-          node-version: "24.9.0"
+          node-version: ${{ github.event.inputs.node-version || '24.9.0' }}
