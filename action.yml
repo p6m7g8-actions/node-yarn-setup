@@ -51,9 +51,10 @@ runs:
     - name: Install pnpm and dependencies
       shell: bash
       run: |
-        yarn install
-        yarn explain peer-requirements
-
+        if [ -e package.json ]; then
+          yarn install
+          yarn explain peer-requirements
+        fi
     - name: Cache NPM dependencies
       uses: actions/cache@v4.3.0
       with:
