@@ -12,6 +12,10 @@ jobs:
     permissions:
       id-token: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5.0.0
+        with:
+          fetch-depth: 0
       - name: Bump Version
         id: bump
         if: ${{ !contains(github.event.head_commit.message, 'chore(release):') }}
@@ -19,10 +23,17 @@ jobs:
         run: |
           set -x
           latest_tag=$(git tag --list "v*" --sort=-v:refname | head -1)
-          log_lines=$(git log $latest_tag..HEAD --pretty="format:- %s")
-          major=$(echo $latest_tag | cut -d. -f1 | sed -e 's,^v,,')
-          minor=$(echo $latest_tag | cut -d. -f2)
-          patch=$(echo $latest_tag | cut -d. -f3)
+          if [ -z "$latest_tag" ]; then
+            major=0
+            minor=0
+            patch=0
+            log_lines=$(git log --pretty="format:- %s")
+          else
+            log_lines=$(git log $latest_tag..HEAD --pretty="format:- %s")
+            major=$(echo $latest_tag | cut -d. -f1 | sed -e 's,^v,,')
+            minor=$(echo $latest_tag | cut -d. -f2)
+            patch=$(echo $latest_tag | cut -d. -f3)
+          fi
 
           if echo "$log_lines" | grep -q "BREAKING CHANGE"; then
             major=$((major + 1))
@@ -62,7 +73,7 @@ jobs:
         if: ${{ steps.bump.outputs.bump == 'true' && !contains(github.event.head_commit.message, 'chore(release):') }}
         shell: bash
         env:
-          GITHUB_TOKEN: ${{ inputs.p6_a_gh_token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_REF: ${{ github.ref }}
         run: |
