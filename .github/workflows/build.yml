@@ -16,15 +16,3 @@ jobs:
         uses: ./ # use the local action from this repository
         with:
           node-version: "24.9.0"
-
-      - name: Validate Node & Yarn environment
-        shell: bash
-        run: |
-          echo "Validating Node.js and Yarn setup..."
-          node -v
-          npm -v
-          yarn -v
-          corepack --version
-          which node
-          which yarn
-          echo "PATH: $PATH"
