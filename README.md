@@ -9,5 +9,5 @@
     - name: Node
       uses: p6m7g8-actions/node-yarn-setup@main
       with:
-        node-version: '24.9.0'
+        node-version: '24.12.0'
 ```
