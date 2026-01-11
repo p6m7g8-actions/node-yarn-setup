@@ -4,9 +4,9 @@ author: "Philip M. Gollucci"
 
 inputs:
   node-version:
-    description: "Node.js version to install (e.g., 24.9.0)"
+    description: "Node.js version to install (e.g., 24.12.0)"
     required: false
-    default: "24.9.0"
+    default: "24.12.0"
 
 runs:
   using: "composite"
