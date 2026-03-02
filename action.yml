@@ -23,8 +23,17 @@ runs:
     - name: Corepack
       shell: bash
       run: |
-        corepack enable
-        corepack prepare yarn@latest --activate
+        if [[ "${ACT:-}" == "true" ]]; then
+          # act runs without sudo; install shims into a writable location.
+          COREPACK_BIN_DIR="${RUNNER_TEMP:-$HOME}/corepack-bin"
+          mkdir -p "${COREPACK_BIN_DIR}"
+          corepack enable --install-directory "${COREPACK_BIN_DIR}"
+          echo "${COREPACK_BIN_DIR}" >> "$GITHUB_PATH"
+          corepack prepare yarn@latest --activate
+        else
+          sudo corepack enable
+          sudo corepack prepare yarn@latest --activate
+        fi
 
     - name: Restore NPM node_modules
       uses: actions/cache/restore@v5.0.3
