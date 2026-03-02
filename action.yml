@@ -23,8 +23,8 @@ runs:
     - name: Corepack
       shell: bash
       run: |
-        sudo corepack enable
-        sudo corepack prepare yarn@latest --activate
+        corepack enable
+        corepack prepare yarn@latest --activate
 
     - name: Restore NPM node_modules
       uses: actions/cache/restore@v5.0.3
