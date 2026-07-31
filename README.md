@@ -7,7 +7,7 @@
 
 ```yml
     - name: Node
-      uses: p6m7g8-actions/node-yarn-setup@main
+      uses: p6m7g8-actions/p6-node-yarn-setup@main
       with:
         node-version: '24.14.0'
 ```
